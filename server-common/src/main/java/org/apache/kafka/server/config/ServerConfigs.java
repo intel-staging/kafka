@@ -17,6 +17,7 @@
 package org.apache.kafka.server.config;
 
 import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.common.compress.PluggableCompression;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.record.CompressionType;
@@ -81,12 +82,20 @@ public class ServerConfigs {
             "('gzip', 'snappy', 'lz4', 'zstd'). It additionally accepts 'uncompressed' which is equivalent to no compression; and " +
             "'producer' which means retain the original compression codec set by the producer.";
 
+    public static final String COMPRESSION_GZIP_PROVIDER_CONFIG = "compression.gzip.provider";
+    public static final String COMPRESSION_GZIP_PROVIDER_DOC = "The classname of the compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'gzip'.";
     public static final String COMPRESSION_GZIP_LEVEL_CONFIG = ServerTopicConfigSynonyms.serverSynonym(TopicConfig.COMPRESSION_GZIP_LEVEL_CONFIG);
     public static final String COMPRESSION_GZIP_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'gzip'.";
+    public static final String COMPRESSION_LZ4_PROVIDER_CONFIG = "compression.lz4.provider";
+    public static final String COMPRESSION_LZ4_PROVIDER_DOC = "The classname of the compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'lz4'.";
     public static final String COMPRESSION_LZ4_LEVEL_CONFIG = ServerTopicConfigSynonyms.serverSynonym(TopicConfig.COMPRESSION_LZ4_LEVEL_CONFIG);
     public static final String COMPRESSION_LZ4_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'lz4'.";
+    public static final String COMPRESSION_SNAPPY_PROVIDER_CONFIG = "compression.snappy.provider";
+    public static final String COMPRESSION_SNAPPY_PROVIDER_DOC = "The classname of the compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'snappy'.";
     public static final String COMPRESSION_ZSTD_LEVEL_CONFIG = ServerTopicConfigSynonyms.serverSynonym(TopicConfig.COMPRESSION_ZSTD_LEVEL_CONFIG);
     public static final String COMPRESSION_ZSTD_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'zstd'.";
+    public static final String COMPRESSION_ZSTD_PROVIDER_CONFIG = "compression.zstd.provider";
+    public static final String COMPRESSION_ZSTD_PROVIDER_DOC = "The classname of the compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to 'zstd'.";
 
     /***************** rack configuration *************/
     public static final String BROKER_RACK_CONFIG = "broker.rack";
@@ -145,8 +154,13 @@ public class ServerConfigs {
             .define(DELETE_TOPIC_ENABLE_CONFIG, BOOLEAN, DELETE_TOPIC_ENABLE_DEFAULT, HIGH, DELETE_TOPIC_ENABLE_DOC)
             .define(COMPRESSION_TYPE_CONFIG, STRING, ServerLogConfigs.COMPRESSION_TYPE_DEFAULT, ConfigDef.ValidString.in(BrokerCompressionType.names().toArray(new String[0])), HIGH, COMPRESSION_TYPE_DOC)
             .define(COMPRESSION_GZIP_LEVEL_CONFIG, INT, CompressionType.GZIP.defaultLevel(), CompressionType.GZIP.levelValidator(), MEDIUM, COMPRESSION_GZIP_LEVEL_DOC)
+            .define(COMPRESSION_GZIP_PROVIDER_CONFIG, STRING, null, PluggableCompression.providerValidator(), LOW, COMPRESSION_GZIP_PROVIDER_DOC)
             .define(COMPRESSION_LZ4_LEVEL_CONFIG, INT, CompressionType.LZ4.defaultLevel(), CompressionType.LZ4.levelValidator(), MEDIUM, COMPRESSION_LZ4_LEVEL_DOC)
+            .define(COMPRESSION_LZ4_PROVIDER_CONFIG, STRING, null, PluggableCompression.providerValidator(), LOW, COMPRESSION_LZ4_PROVIDER_DOC)
+            .define(COMPRESSION_SNAPPY_PROVIDER_CONFIG, STRING, null, PluggableCompression.providerValidator(), LOW, COMPRESSION_SNAPPY_PROVIDER_DOC)
             .define(COMPRESSION_ZSTD_LEVEL_CONFIG, INT, CompressionType.ZSTD.defaultLevel(), CompressionType.ZSTD.levelValidator(), MEDIUM, COMPRESSION_ZSTD_LEVEL_DOC)
+            .define(COMPRESSION_ZSTD_PROVIDER_CONFIG, STRING, null, PluggableCompression.providerValidator(), LOW, COMPRESSION_ZSTD_PROVIDER_DOC)
+
             /** ********* Fetch Configuration **************/
             .define(MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_CONFIG, INT, MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_DEFAULT, atLeast(0), MEDIUM, MAX_INCREMENTAL_FETCH_SESSION_CACHE_SLOTS_DOC)
             .define(FETCH_MAX_BYTES_CONFIG, INT, FETCH_MAX_BYTES_DEFAULT, atLeast(1024), MEDIUM, FETCH_MAX_BYTES_DOC)

@@ -1804,6 +1804,7 @@ project(':clients') {
 
   dependencies {
     implementation libs.zstd
+    implementation libs.qatjava
     implementation libs.lz4
     implementation libs.snappy
     implementation libs.opentelemetryProto
@@ -1812,6 +1813,7 @@ project(':clients') {
 
     // libraries which should be added as runtime dependencies in generated pom.xml should be defined here:
     shadowed libs.zstd
+    shadowed libs.qatjava
     shadowed libs.lz4
     shadowed libs.snappy
     shadowed libs.slf4jApi

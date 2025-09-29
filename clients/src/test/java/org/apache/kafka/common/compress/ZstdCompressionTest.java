@@ -38,12 +38,13 @@ public class ZstdCompressionTest {
 
     @Test
     public void testCompressionDecompression() throws IOException {
-        ZstdCompression.Builder builder = Compression.zstd();
+        //ZstdCompression.Builder builder = (ZstdCompression.Builder) Compression.zstd();
+        Compression.Builder<? extends Compression> builder = Compression.zstd();
         byte[] data = String.join("", Collections.nCopies(256, "data")).getBytes(StandardCharsets.UTF_8);
 
         for (byte magic : Arrays.asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1, RecordBatch.MAGIC_VALUE_V2)) {
             for (int level : Arrays.asList(ZSTD.minLevel(), ZSTD.defaultLevel(), ZSTD.maxLevel())) {
-                ZstdCompression compression = builder.level(level).build();
+                Compression compression = builder.level(level).build();
                 ByteBufferOutputStream bufferStream = new ByteBufferOutputStream(4);
                 try (OutputStream out = compression.wrapForOutput(bufferStream, magic)) {
                     out.write(data);
@@ -63,7 +64,8 @@ public class ZstdCompressionTest {
 
     @Test
     public void testCompressionLevels() {
-        ZstdCompression.Builder builder = Compression.zstd();
+        //ZstdCompression.Builder builder = (ZstdCompression.Builder) Compression.zstd();
+        Compression.Builder<? extends Compression> builder = Compression.zstd();
 
         assertThrows(IllegalArgumentException.class, () -> builder.level(ZSTD.minLevel() - 1));
         assertThrows(IllegalArgumentException.class, () -> builder.level(ZSTD.maxLevel() + 1));

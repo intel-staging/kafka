@@ -19,6 +19,7 @@ package org.apache.kafka.clients.producer;
 import org.apache.kafka.clients.ClientDnsLookup;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.MetadataRecoveryStrategy;
+import org.apache.kafka.common.compress.PluggableCompression;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigDef.Importance;
@@ -239,14 +240,27 @@ public class ProducerConfig extends AbstractConfig {
     /** <code>compression.gzip.level</code> */
     public static final String COMPRESSION_GZIP_LEVEL_CONFIG = "compression.gzip.level";
     private static final String COMPRESSION_GZIP_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>gzip</code>.";
+    /** <code>compression.gzip.provider</code> */
+    public static final String COMPRESSION_GZIP_PROVIDER_CONFIG = "compression.gzip.provider";
+    private static final String COMPRESSION_GZIP_PROVIDER_DOC = "The classname of the preferred compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>gzip</code>.";
 
     /** <code>compression.lz4.level</code> */
     public static final String COMPRESSION_LZ4_LEVEL_CONFIG = "compression.lz4.level";
     private static final String COMPRESSION_LZ4_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>lz4</code>.";
+    /** <code>compression.lz4.provider</code> */
+    public static final String COMPRESSION_LZ4_PROVIDER_CONFIG = "compression.lz4.provider";
+    private static final String COMPRESSION_LZ4_PROVIDER_DOC = "The classname of the preferred compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>lz4</code>.";
 
     /** <code>compression.zstd.level</code> */
     public static final String COMPRESSION_ZSTD_LEVEL_CONFIG = "compression.zstd.level";
     private static final String COMPRESSION_ZSTD_LEVEL_DOC = "The compression level to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>zstd</code>.";
+    /** <code>compression.zstd.provider</code> */
+    public static final String COMPRESSION_ZSTD_PROVIDER_CONFIG = "compression.zstd.provider";
+    private static final String COMPRESSION_ZSTD_PROVIDER_DOC = "The classname of the preferred compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>zstd</code>.";
+
+    /** <code>compression.snappy.provider</code> */
+    public static final String COMPRESSION_SNAPPY_PROVIDER_CONFIG = "compression.snappy.provider";
+    private static final String COMPRESSION_SNAPPY_PROVIDER_DOC = "The classname of the preferred compression service provider to use if " + COMPRESSION_TYPE_CONFIG + " is set to <code>snappy</code>.";
 
     /** <code>metrics.sample.window.ms</code> */
     public static final String METRICS_SAMPLE_WINDOW_MS_CONFIG = CommonClientConfigs.METRICS_SAMPLE_WINDOW_MS_CONFIG;
@@ -396,8 +410,12 @@ public class ProducerConfig extends AbstractConfig {
                                         ACKS_DOC)
                                 .define(COMPRESSION_TYPE_CONFIG, Type.STRING, CompressionType.NONE.name, in(Utils.enumOptions(CompressionType.class)), Importance.HIGH, COMPRESSION_TYPE_DOC)
                                 .define(COMPRESSION_GZIP_LEVEL_CONFIG, Type.INT, CompressionType.GZIP.defaultLevel(), CompressionType.GZIP.levelValidator(), Importance.MEDIUM, COMPRESSION_GZIP_LEVEL_DOC)
+                                .define(COMPRESSION_GZIP_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.LOW, COMPRESSION_GZIP_PROVIDER_DOC)
                                 .define(COMPRESSION_LZ4_LEVEL_CONFIG, Type.INT, CompressionType.LZ4.defaultLevel(), CompressionType.LZ4.levelValidator(), Importance.MEDIUM, COMPRESSION_LZ4_LEVEL_DOC)
+                                .define(COMPRESSION_LZ4_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.LOW, COMPRESSION_LZ4_PROVIDER_DOC)
                                 .define(COMPRESSION_ZSTD_LEVEL_CONFIG, Type.INT, CompressionType.ZSTD.defaultLevel(), CompressionType.ZSTD.levelValidator(), Importance.MEDIUM, COMPRESSION_ZSTD_LEVEL_DOC)
+                                .define(COMPRESSION_ZSTD_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.LOW, COMPRESSION_ZSTD_PROVIDER_DOC)
+                                .define(COMPRESSION_SNAPPY_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.LOW, COMPRESSION_SNAPPY_PROVIDER_DOC)
                                 .define(BATCH_SIZE_CONFIG, Type.INT, 16384, atLeast(0), Importance.MEDIUM, BATCH_SIZE_DOC)
                                 .define(PARTITIONER_ADAPTIVE_PARTITIONING_ENABLE_CONFIG, Type.BOOLEAN, true, Importance.LOW, PARTITIONER_ADAPTIVE_PARTITIONING_ENABLE_DOC)
                                 .define(PARTITIONER_AVAILABILITY_TIMEOUT_MS_CONFIG, Type.LONG, 0, atLeast(0), Importance.LOW, PARTITIONER_AVAILABILITY_TIMEOUT_MS_DOC)

@@ -64,6 +64,12 @@ public interface Compression {
 
     interface Builder<T extends Compression> {
         T build();
+        default Builder<T> level(int level) { 
+            return this; 
+        }
+        default boolean isAvailable() {
+            return false; 
+        }
     }
 
     static Builder<? extends Compression> of(final String compressionName) {
@@ -94,19 +100,23 @@ public interface Compression {
         return new NoCompression.Builder();
     }
 
-    static GzipCompression.Builder gzip() {
-        return new GzipCompression.Builder();
+    static Builder<? extends Compression> gzip() {
+        Builder<? extends Compression> builder = PluggableCompression.builder(CompressionType.GZIP.name);
+        return builder != null ? builder : new GzipCompression.Builder();
     }
 
-    static SnappyCompression.Builder snappy() {
-        return new SnappyCompression.Builder();
+    static Builder<? extends Compression> snappy() {
+        Builder<? extends Compression> builder = PluggableCompression.builder(CompressionType.SNAPPY.name);
+        return builder != null ? builder : new SnappyCompression.Builder();
     }
 
-    static Lz4Compression.Builder lz4() {
-        return new Lz4Compression.Builder();
+    static Builder<? extends Compression> lz4() {
+        Builder<? extends Compression> builder = PluggableCompression.builder(CompressionType.LZ4.name);
+        return builder != null ? builder : new Lz4Compression.Builder();
     }
 
-    static ZstdCompression.Builder zstd() {
-        return new ZstdCompression.Builder();
+    static Builder<? extends Compression> zstd() {
+        Builder<? extends Compression> builder = PluggableCompression.builder(CompressionType.ZSTD.name);
+        return builder != null ? builder : new ZstdCompression.Builder();
     }
 }

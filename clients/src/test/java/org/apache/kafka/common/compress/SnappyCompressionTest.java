@@ -36,7 +36,7 @@ public class SnappyCompressionTest {
 
     @Test
     public void testCompressionDecompression() throws IOException {
-        SnappyCompression compression = Compression.snappy().build();
+        Compression compression = Compression.snappy().build();
         byte[] data = String.join("", Collections.nCopies(256, "data")).getBytes(StandardCharsets.UTF_8);
 
         for (byte magic : Arrays.asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1, RecordBatch.MAGIC_VALUE_V2)) {

@@ -22,6 +22,7 @@ import org.apache.kafka.clients.MetadataRecoveryStrategy;
 import org.apache.kafka.clients.consumer.internals.AutoOffsetResetStrategy;
 import org.apache.kafka.clients.consumer.internals.ShareAcknowledgementMode;
 import org.apache.kafka.common.IsolationLevel;
+import org.apache.kafka.common.compress.PluggableCompression;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigDef.Importance;
@@ -374,6 +375,21 @@ public class ConsumerConfig extends AbstractConfig {
             " broker allows for it using <code>auto.create.topics.enable</code> broker configuration.";
     public static final boolean DEFAULT_ALLOW_AUTO_CREATE_TOPICS = true;
 
+    /** <code>compression.gzip.provider</code> */
+    public static final String COMPRESSION_GZIP_PROVIDER_CONFIG = "compression.gzip.provider";
+    private static final String COMPRESSION_GZIP_PROVIDER_DOC = "The classname of the preferred compression service provider to use if compression.type is set to <code>gzip</code>.";
+
+    /** <code>compression.zstd.provider</code> */
+    public static final String COMPRESSION_ZSTD_PROVIDER_CONFIG = "compression.zstd.provider";
+    private static final String COMPRESSION_ZSTD_PROVIDER_DOC = "The classname of the preferred compression service provider to use if compression.type is set to <code>zstd</code>.";
+
+    /** <code>compression.lz4.provider</code> */
+    public static final String COMPRESSION_LZ4_PROVIDER_CONFIG = "compression.lz4.provider";
+    private static final String COMPRESSION_LZ4_PROVIDER_DOC = "The classname of the preferred compression service provider to use if compression.type is set to <code>lz4</code>.";
+
+    /** <code>compression.snappy.provider</code> */
+    public static final String COMPRESSION_SNAPPY_PROVIDER_CONFIG = "compression.snappy.provider";
+    private static final String COMPRESSION_SNAPPY_PROVIDER_DOC = "The classname of the preferred compression service provider to use if compression.type is set to <code>snappy</code>.";
     /**
      * <code>security.providers</code>
      */
@@ -664,6 +680,10 @@ public class ConsumerConfig extends AbstractConfig {
                                         DEFAULT_GROUP_REMOTE_ASSIGNOR,
                                         Importance.MEDIUM,
                                         GROUP_REMOTE_ASSIGNOR_DOC)
+                                .define(COMPRESSION_GZIP_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.HIGH, COMPRESSION_GZIP_PROVIDER_DOC)
+                                .define(COMPRESSION_ZSTD_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.HIGH, COMPRESSION_ZSTD_PROVIDER_DOC)
+                                .define(COMPRESSION_LZ4_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.HIGH, COMPRESSION_LZ4_PROVIDER_DOC)
+                                .define(COMPRESSION_SNAPPY_PROVIDER_CONFIG, Type.STRING, "", PluggableCompression.providerValidator(), Importance.HIGH, COMPRESSION_SNAPPY_PROVIDER_DOC)
                                 // security support
                                 .define(SECURITY_PROVIDERS_CONFIG,
                                         Type.STRING,

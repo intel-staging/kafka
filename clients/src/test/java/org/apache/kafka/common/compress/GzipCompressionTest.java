@@ -40,12 +40,12 @@ public class GzipCompressionTest {
 
     @Test
     public void testCompressionDecompression() throws IOException {
-        GzipCompression.Builder builder = Compression.gzip();
+        Compression.Builder<? extends Compression> builder = Compression.gzip();
         byte[] data = String.join("", Collections.nCopies(256, "data")).getBytes(StandardCharsets.UTF_8);
 
         for (byte magic : Arrays.asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1, RecordBatch.MAGIC_VALUE_V2)) {
             for (int level : Arrays.asList(GZIP.minLevel(), GZIP.defaultLevel(), GZIP.maxLevel())) {
-                GzipCompression compression = builder.level(level).build();
+                Compression compression = builder.level(level).build();
                 ByteBufferOutputStream bufferStream = new ByteBufferOutputStream(4);
                 try (OutputStream out = compression.wrapForOutput(bufferStream, magic)) {
                     out.write(data);
@@ -65,7 +65,7 @@ public class GzipCompressionTest {
 
     @Test
     public void testCompressionLevels() {
-        GzipCompression.Builder builder = Compression.gzip();
+        Compression.Builder<? extends Compression> builder = Compression.gzip();
 
         assertThrows(IllegalArgumentException.class, () -> builder.level(GZIP.minLevel() - 1));
         assertThrows(IllegalArgumentException.class, () -> builder.level(GZIP.maxLevel() + 1));

@@ -87,12 +87,12 @@ public class Lz4CompressionTest {
 
     @Test
     public void testCompressionDecompression() throws IOException {
-        Lz4Compression.Builder builder = Compression.lz4();
+        Compression.Builder<? extends Compression> builder = Compression.lz4();
         byte[] data = String.join("", Collections.nCopies(256, "data")).getBytes(StandardCharsets.UTF_8);
 
         for (byte magic : Arrays.asList(RecordBatch.MAGIC_VALUE_V0, RecordBatch.MAGIC_VALUE_V1, RecordBatch.MAGIC_VALUE_V2)) {
             for (int level : Arrays.asList(LZ4.minLevel(), LZ4.defaultLevel(), LZ4.maxLevel())) {
-                Lz4Compression compression = builder.level(level).build();
+                Compression compression = builder.level(level).build();
                 ByteBufferOutputStream bufferStream = new ByteBufferOutputStream(4);
                 try (OutputStream out = compression.wrapForOutput(bufferStream, magic)) {
                     out.write(data);
@@ -112,7 +112,7 @@ public class Lz4CompressionTest {
 
     @Test
     public void testCompressionLevels() {
-        Lz4Compression.Builder builder = Compression.lz4();
+        Compression.Builder<? extends Compression> builder = Compression.lz4();
 
         assertThrows(IllegalArgumentException.class, () -> builder.level(LZ4.minLevel() - 1));
         assertThrows(IllegalArgumentException.class, () -> builder.level(LZ4.maxLevel() + 1));

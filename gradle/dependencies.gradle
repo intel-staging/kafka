@@ -130,6 +130,7 @@ versions += [
   // When updating the zstd version, please do as well in docker/native/native-image-configs/resource-config.json
   // Also make sure the compression levels in org.apache.kafka.common.record.CompressionType are still valid
   zstd: "1.5.6-10",
+  qatjava: "2.3.2",
   junitPlatform: "1.13.1",
   hdrHistogram: "2.2.2",
   hash4j: "0.22.0"
@@ -233,6 +234,7 @@ libs += [
   jfreechart: "org.jfree:jfreechart:$versions.jfreechart",
   mavenArtifact: "org.apache.maven:maven-artifact:$versions.mavenArtifact",
   zstd: "com.github.luben:zstd-jni:$versions.zstd",
+  qatjava: "com.intel.qat:qat-java:$versions.qatjava", 
   httpclient: "org.apache.httpcomponents:httpclient:$versions.httpclient",
   hdrHistogram: "org.hdrhistogram:HdrHistogram:$versions.hdrHistogram",
   hash4j: "com.dynatrace.hash4j:hash4j:$versions.hash4j",
